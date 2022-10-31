@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> Vehicle Calculator</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link  rel="stylesheet" href="calstyle.css"> 
+
+</head>
+<body>
+  <div class="main-container" >
+    <label id="titlelabel">SVG Vehicle Duty Calculator</label> <br>
+    <label style="text-align:center" id="datelabel"></label>
+    
+    <div style="background-color:pink;" id="container"> 
+      <h4>Valuation</h4> 
+      <label class="costL">Cost</label><input class="value_Input" id="fob" type="number"/>
+      <label for="currency">Currency</label>
+      <select id="currency" name="currency" class="value_Input">
+        <option value="">Select</option>
+        <option value="usd">USD</option>
+        <option value="xcd">XCD</option>
+      </select>
+      <label for="terms" class="termsL">Terms</label>
+      <select id="terms" name="terms" class="value_Input" onchange="termsFN()">
+        <option value="">Select</option>
+        <option value="cif">CIF</option>
+        <option value="fob" >FOB</option>
+        <option value="cfr">CFR</option>
+      </select>
+      <br/>
+
+      <label class="costL">Freight</label><input class="value_Input" name="frt" id="frt" type="number"/><br>
+
+      <label class="costL">Insurance</label><input class="value_Input" name="ins" id="ins" type="number"/><br>
+
+      <button id="total_button" onClick="getTotal();">Total CIF EC $</button><input class="value_Input" id="cif" name="cif" type="text" disabled/>
+      <button  class="resetButton" id="resetV" name="resetV" onclick="resetValues();"></button><br>
+    </div>
+
+    <div id="container" name="specs" style="background-color:rgb(180, 180, 206)">
+      <h4>Specification</h4>
+      <label class="specL" >Make :</label><input class="specs_Inp" type="text" id="make" name="make" ><br>
+      <label class="specL">Model :</label><input class="specs_Inp" type="text" id="model" name="model"><br>
+      <label class="specL">Chassis :</label><input class="specs_Inp" type="text" id="chassis" name="chassis"><br>
+      <label class="specL">Year :</label><input class="specs_Inp" type="number" id="year" name="year">
+      <label class="ageL">Age :</label><input class="specs_Inp" id="age" name="age" disabled> <br>
+     <label class="specL" for="source">Source :</label>
+      <select class="specs_Inp" id="source" name="source">
+        <option value="">Select</option>
+        <option value="diesel">Diesel</option>
+        <option value="dumper">Dumper</option>
+        <option value="electric">Electric</option>
+        <option value="gas">Gas</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="seats" class="seatsL">Seating :</label><input id="seats" class="specs_Inp" type="number" name="seats">
+      <br>
+      <label class="specL" id="cc_sL">CCs/Range :</label><input type="number" id="cc_s" name="cc_s" class="specs_Inp">    
+      <label for="weight" class="weightL">Tonnage:</label><input id="weight" class="specs_Inp" type="number" name="weight"><br>
+      <label class="specL">HS Heading :</label>
+      <select id="hs" name="hs" class="specs_Inp" onchange="heading_Duty();">
+        <option value="">Select</option>
+        <option value="8701">8701</option>
+        <option value="8702">8702</option>
+        <option value="8703">8703</option>
+        <option value="8704">8704</option>
+        <option value="8705">8705</option>
+      </select>
+      <label for="options" class="optionsL">Option :</label>
+      <select class="specs_Inp" name="options" id="options">
+        <option value="">Nil</option>
+        <option value="concrete_mixer">Concrete Mixer</option>
+        <option value="crane_lorry">Crane Lorries</option>
+        <option value="fire_fighting">Fire Fighting</option>
+        <option value="mobile_derrick">Mobile Derricks</option>
+        <option value="other">Other</option>    
+      </select>
+     <br>
+      <button class="resetButton" id="resetS" name="resetS" onclick="resetSpecs();"></button>
+    </div>
+
+    <div class="duty" id="container" name="duty" style="background-color:rgb(159, 184, 159);">
+      <h4>Calculation of duties</h4>
+      <label class="taxesL">Taxes</label><label class="rateL">Rate</label> <label class="amountL">Amount</label>
+      <label class="waiverL">Waiver(%)</label><input type="checkbox" id="waiver" class="waiver" name="waiver" onclick="check_waiver()"> <br>
+
+      <label class="taxL">Import Duty</label><input type="text" class="tax_Rate" id="iduty_Rate" name="iduty_Rate" disabled >
+      <input type="text" class="tax_Amount" id="iduty_Amount" disabled name="iduty_Amount" ><input type="number" class="tax_Waiver" id="iduty_Waiver" name="iduty_Waiver" disabled > <br>
+
+      <label class="taxL">Excise Tax</label><input type="text" class="tax_Rate" id="etax_Rate" name="etax_Rate" disabled >
+      <input type="text" class="tax_Amount" id="etax_Amount" disabled name="etax_Amount" ><input type="number" class="tax_Waiver" id="etax_Waiver" name="etax_Waiver" disabled="true"> <br>
+
+      <label class="taxL">C S C </label><input type="text" class="tax_Rate" id="csc_Rate" disabled name="csc_Rate" >
+      <input type="text" class="tax_Amount" id="csc_Amount" disabled name="csc_Amount" ><input type="number" class="tax_Waiver" id="csc_Waiver" name="csc_Waiver" disabled="true"> <br>
+
+      <label class="taxL">Vehicle Surcharge</label><input type="text" class="tax_Amount" id="vs_Amount" disabled name="vs_Amount"><input type="number" class="tax_Waiver" id="vs_Waiver" name="vs_Waiver" disabled="true"> <br>
+      <label class="taxL">VAT Base</label><input type="text" class="vb_Amount" id="vb_Amount" disabled name="vb_Amount"> <br>
+    
+      <label class="taxL">Value Added Tax</label><input type="text" class="tax_Rate" id="vat_Rate" disabled name="vat_Rate" >
+      <input type="text" class="tax_Amount" id="vat_Amount" disabled name="vat_Amount" ><input type="text" class="tax_Waiver" id="vat_Waiver" name="vat_Waiver" disabled="true"> <br>
+
+      <button class="total_Duties" id="total_Duties" onclick="calculateDuties();">Total duties XCD </button><input type="text" disabled class="total_DutiesInp" id="total_DutiesInp" name="total_DutiesInp">
+      <button class="resetButton" id="reset_Duties" name="reset_Duties" onclick="resetAllDuties();"></button><br>
+
+    </div>
+    <label>Courtesy:<span id="owner"> JAM Ventures SVG</span></label>
+    <p id="demo"></p>
+  </div>
+
+  <script src="engine.js"></script> 
+  <script src="data.js"></script>
+
+</body>
+</html>
